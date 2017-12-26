@@ -231,8 +231,8 @@ scaled          = None    # pygame Surface w/last-loaded image
 # user, set upconfig to the .dropbox_uploader config file in that account's
 # home directory.  Alternately, could run the setup script as root and
 # delete the upconfig line below.
-uploader        = '/home/pi/Dropbox-Uploader/dropbox_uploader.sh'
-upconfig        = '/home/pi/.dropbox_uploader'
+#uploader        = '/home/pi/Dropbox-Uploader/dropbox_uploader.sh'
+#upconfig        = '/home/pi/.dropbox_uploader'
 
 sizeData = [ # Camera parameters for different size settings
  # Full res      Viewfinder  Crop window
@@ -259,7 +259,7 @@ fxData = [
 pathData = [
   '/home/pi/Photos',     # Path for storeMode = 0 (Photos folder)
   '/boot/DCIM/CANON999', # Path for storeMode = 1 (Boot partition)
-  '/home/pi/Photos']     # Path for storeMode = 2 (Dropbox)
+  '/mnt/Samsung']     # Path for storeMode = 2 (Dropbox)
 
 icons = [] # This list gets populated at startup
 
@@ -309,7 +309,7 @@ buttons = [
     cb=storeModeCallback, value=0),
    Button((110, 60,100,120), bg='radio3-0', fg='store-boot',
     cb=storeModeCallback, value=1),
-   Button((218, 60,100,120), bg='radio3-0', fg='store-dropbox',
+   Button((218, 60,100,120), bg='radio3-0', fg='store-folder',
     cb=storeModeCallback, value=2),
    Button((  0, 10,320, 35), bg='storage')],
 
@@ -477,18 +477,22 @@ def takePicture():
 	try:
 	  camera.capture(filename, use_video_port=False, format='jpeg',
 	    thumbnail=None)
+	  # camera.resolution = (640, 480)
+	  camera.start_recording(filename)
+	  camera.wait_recording(60)
+	  camera.stop_recording()
 	  # Set image file ownership to pi user, mode to 644
 	  # os.chown(filename, uid, gid) # Not working, why?
 	  os.chmod(filename,
 	    stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 	  img    = pygame.image.load(filename)
 	  scaled = pygame.transform.scale(img, sizeData[sizeMode][1])
-	  if storeMode == 2: # Dropbox
-	    if upconfig:
-	      cmd = uploader + ' -f ' + upconfig + ' upload ' + filename + ' Photos/' + os.path.basename(filename)
-	    else:
-	      cmd = uploader + ' upload ' + filename + ' Photos/' + os.path.basename(filename)
-	    call ([cmd], shell=True)
+	  # if storeMode == 2: # Dropbox
+	  #   if upconfig:
+	  #     cmd = uploader + ' -f ' + upconfig + ' upload ' + filename + ' Photos/' + os.path.basename(filename)
+	  #   else:
+	  #     cmd = uploader + ' upload ' + filename + ' Photos/' + os.path.basename(filename)
+	  #   call ([cmd], shell=True)
 
 	finally:
 	  # Add error handling/indicator (disk full, etc.)
