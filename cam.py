@@ -463,7 +463,7 @@ def takePicture():
 
 	# Scan for next available image slot
 	while True:
-	  filename = pathData[storeMode] + '/IMG_' + '%04d' % saveIdx + '.JPG'
+	  filename = pathData[storeMode] + '/IMG_' + '%04d' % saveIdx + '.h264'
 	  if not os.path.isfile(filename): break
 	  saveIdx += 1
 	  if saveIdx > 9999: saveIdx = 0
@@ -475,8 +475,8 @@ def takePicture():
 	camera.resolution = sizeData[sizeMode][0]
 	camera.crop       = sizeData[sizeMode][2]
 	try:
-	  camera.capture(filename, use_video_port=False, format='jpeg',
-	    thumbnail=None)
+	  #camera.capture(filename, use_video_port=False, format='jpeg',
+	  #  thumbnail=None)
 	  # camera.resolution = (640, 480)
 	  camera.start_recording(filename)
 	  camera.wait_recording(60)
@@ -485,8 +485,8 @@ def takePicture():
 	  # os.chown(filename, uid, gid) # Not working, why?
 	  os.chmod(filename,
 	    stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
-	  img    = pygame.image.load(filename)
-	  scaled = pygame.transform.scale(img, sizeData[sizeMode][1])
+	  #img    = pygame.image.load(filename)
+	  #scaled = pygame.transform.scale(img, sizeData[sizeMode][1])
 	  # if storeMode == 2: # Dropbox
 	  #   if upconfig:
 	  #     cmd = uploader + ' -f ' + upconfig + ' upload ' + filename + ' Photos/' + os.path.basename(filename)
