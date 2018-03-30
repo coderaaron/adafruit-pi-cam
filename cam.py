@@ -309,7 +309,7 @@ buttons = [
     cb=storeModeCallback, value=0),
    Button((110, 60,100,120), bg='radio3-0', fg='store-boot',
     cb=storeModeCallback, value=1),
-   Button((218, 60,100,120), bg='radio3-0', fg='store-folder',
+   Button((218, 60,100,120), bg='radio3-0', fg='store-usb',
     cb=storeModeCallback, value=2),
    Button((  0, 10,320, 35), bg='storage')],
 
